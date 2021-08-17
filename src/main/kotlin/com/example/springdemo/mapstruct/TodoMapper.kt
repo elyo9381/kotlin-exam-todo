@@ -13,10 +13,9 @@ interface TodoMapper {
 
     @Mappings(
         Mapping(source = "title", target = "titleName"),
-//        Mapping(target = "id",ignore = true)
+        Mapping(target = "id",ignore = true)
     )
     fun toTodoDto(todo: Todo): TodoDto
 
-    @InheritInverseConfiguration
     fun toTodo(todoDto: TodoDto): Todo
 }
