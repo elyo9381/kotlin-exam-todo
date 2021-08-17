@@ -2,13 +2,11 @@ package com.example.springdemo.mapstruct
 
 import com.example.springdemo.dto.TodoDto
 import com.example.springdemo.entity.Todo
-import org.mapstruct.InheritInverseConfiguration
-import org.mapstruct.Mapper
-import org.mapstruct.Mapping
-import org.mapstruct.Mappings
-import org.springframework.stereotype.Component
+import org.mapstruct.*
+import org.springframework.format.annotation.DateTimeFormat
 
-@Mapper(componentModel = "spring")
+
+@Mapper(componentModel = "spring", imports = [DateTimeFormat::class])
 interface TodoMapper {
 
     @Mappings(
@@ -17,5 +15,10 @@ interface TodoMapper {
     )
     fun toTodoDto(todo: Todo): TodoDto
 
+    @Mappings(
+        Mapping(source = "titleName", target = "title"),
+        Mapping(target = "schedule", source = "schedule", dateFormat = "yyyy-MM-dd HH:mm:ss")
+    )
     fun toTodo(todoDto: TodoDto): Todo
+
 }

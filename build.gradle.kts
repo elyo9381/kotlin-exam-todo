@@ -25,6 +25,14 @@ repositories {
 }
 
 dependencies {
+//	db & mapstruct
+    runtimeOnly("mysql:mysql-connector-java")
+// map-struct
+// map-struct Annotation Processor
+    implementation("org.mapstruct:mapstruct:1.4.0.Final")
+    kapt ("org.mapstruct:mapstruct-processor:1.4.0.Final")
+    kaptTest ("org.mapstruct:mapstruct-processor:1.4.0.Final")
+
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
@@ -36,13 +44,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-//	db & mapstruct
-    runtimeOnly("mysql:mysql-connector-java")
-// map-struct
-// map-struct Annotation Processor
-    implementation("org.mapstruct:mapstruct:1.4.0.Final")
-    kapt ("org.mapstruct:mapstruct-processor:1.4.0.Final")
-    kaptTest ("org.mapstruct:mapstruct-processor:1.4.0.Final")
+
 
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.10.2")
     implementation("org.springframework.data:spring-data-rest-hal-browser:3.3.6.RELEASE")

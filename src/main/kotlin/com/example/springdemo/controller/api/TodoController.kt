@@ -1,7 +1,7 @@
 package com.example.springdemo.controller.api
 
 import com.example.springdemo.dto.TodoDto
-import com.example.springdemo.dto.readTodoDto
+import com.example.springdemo.dto.ReadTodoDto
 import com.example.springdemo.service.TodoService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,8 +15,12 @@ class TodoController(private var todoService: TodoService) {
 
 
     @PostMapping(path = [""])
-    fun create(@Valid @RequestBody todoDto: TodoDto): TodoDto? {
-        return todoService.createTodo(todoDto)
+    fun create(@Valid @RequestBody todoDto: TodoDto): ResponseEntity<Any?> {
+
+
+        val createTodo = todoService.createTodo(todoDto)
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createTodo)
     }
 
     @GetMapping(path = ["/{id}"])
@@ -31,7 +35,7 @@ class TodoController(private var todoService: TodoService) {
     }
     // R
     @GetMapping(path = [""])
-    fun readAll(): MutableList<readTodoDto> {
+    fun readAll(): MutableList<ReadTodoDto> {
         return todoService.readAllTodo()
     }
 
