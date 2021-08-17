@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework: DEBUG
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/testTodo?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+
+jpa:
+  show-sql: true
+h2:
+  console:
+    enabled: true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
