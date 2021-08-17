@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.validation.constraints.NotBlank
 
-data class readTodoDto(
+data class ReadTodoDto(
 
     var id: Long? = null,
 
@@ -21,8 +21,8 @@ data class readTodoDto(
     var createdAt: LocalDateTime?= LocalDateTime.now(),
     var updatedAt: LocalDateTime?=null
 )
-fun readTodoDto.readDto(todo: Todo) : readTodoDto{
-    return readTodoDto().apply {
+fun ReadTodoDto.readDto(todo: Todo) : ReadTodoDto{
+    return ReadTodoDto().apply {
         this.id = todo.id
         this.title = todo.title
         this.description = todo.description

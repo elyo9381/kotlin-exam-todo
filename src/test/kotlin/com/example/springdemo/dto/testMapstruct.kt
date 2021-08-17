@@ -2,7 +2,6 @@ package com.example.springdemo.dto
 
 import com.example.springdemo.entity.Todo
 import com.example.springdemo.mapstruct.TodoMapper
-import com.example.springdemo.mapstruct.TodoMapperImpl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -54,7 +53,11 @@ internal class testMapstruct {
         }
         /* when */
         val toEntity = converter.toTodo(testDto)
+
+//        LocalDateTime.parse(testDto.schedule);
+//        val toEntity = Todo().convertTodo(testDto)
         /* then */
+        println(toEntity)
         assertThat(toEntity).isNotNull
         assertEquals( testDto.titleName, toEntity.title)
 
