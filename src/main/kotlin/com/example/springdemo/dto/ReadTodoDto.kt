@@ -21,13 +21,4 @@ data class ReadTodoDto(
     var createdAt: LocalDateTime?= LocalDateTime.now(),
     var updatedAt: LocalDateTime?=null
 )
-fun ReadTodoDto.readDto(todo: Todo) : ReadTodoDto{
-    return ReadTodoDto().apply {
-        this.id = todo.id
-        this.title = todo.title
-        this.description = todo.description
-        this.schedule = todo.schedule?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-        this.createdAt = todo.createdAt
-        this.updatedAt = todo.updatedAt
-    }
-}
+

@@ -14,9 +14,6 @@ import java.time.format.DateTimeFormatter
 
 internal class testMapstruct {
 
-//    @Autowired
-//    private lateinit var todoMapper: TodoMapper
-
     val converter = Mappers.getMapper(TodoMapper::class.java)
 
     @Test

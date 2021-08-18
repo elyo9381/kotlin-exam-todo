@@ -20,18 +20,6 @@ data class TodoDto(
     var schedule: String? = null,
     var createdAt: LocalDateTime? = LocalDateTime.now(),
     var updatedAt: LocalDateTime? = null,
-) {
-
-    fun convertTodoDto(todo: Todo): TodoDto{
-        return this.apply {
-            this.id = todo.id
-//            this.title = todo.title
-            this.description = todo.description
-            this.schedule = todo.schedule?.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-            this.createdAt = todo.createdAt
-            this.updatedAt = todo.updatedAt
-        }
-    }
+)
 
 
-}

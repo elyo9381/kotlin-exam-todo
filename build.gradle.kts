@@ -4,6 +4,8 @@ import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 plugins {
     id("org.springframework.boot") version "2.5.3"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+
+
     kotlin("jvm") version "1.5.21"
     kotlin("plugin.spring") version "1.5.21"
     kotlin("plugin.jpa") version "1.5.21"
@@ -25,30 +27,30 @@ repositories {
 }
 
 dependencies {
-//	db & mapstruct
-    runtimeOnly("mysql:mysql-connector-java")
-// map-struct
-// map-struct Annotation Processor
-    implementation("org.mapstruct:mapstruct:1.4.0.Final")
-    kapt ("org.mapstruct:mapstruct-processor:1.4.0.Final")
-    kaptTest ("org.mapstruct:mapstruct-processor:1.4.0.Final")
 
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.4")
 
+
+    testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.0")
+    runtimeOnly("mysql:mysql-connector-java")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
 
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.10.2")
     implementation("org.springframework.data:spring-data-rest-hal-browser:3.3.6.RELEASE")
 
+    implementation("org.mapstruct:mapstruct:1.4.0.Final")
+    kapt ("org.mapstruct:mapstruct-processor:1.4.0.Final")
+    kaptTest ("org.mapstruct:mapstruct-processor:1.4.0.Final")
 
 }
 //

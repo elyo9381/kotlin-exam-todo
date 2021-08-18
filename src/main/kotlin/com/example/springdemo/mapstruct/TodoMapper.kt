@@ -4,9 +4,11 @@ import com.example.springdemo.dto.TodoDto
 import com.example.springdemo.entity.Todo
 import org.mapstruct.*
 import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.stereotype.Component
 
 
 @Mapper(componentModel = "spring", imports = [DateTimeFormat::class])
+@Component
 interface TodoMapper {
 
     @Mappings(

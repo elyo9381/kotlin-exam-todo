@@ -1,18 +1,23 @@
 package com.example.springdemo.entity
 
 import com.example.springdemo.dto.TodoDto
+import com.example.springdemo.mapstruct.TodoMapper
 import com.example.springdemo.repository.TodoRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
+import org.mapstruct.factory.Mappers
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
 
-//@ExtendWith(SpringExtension::class)
+//@ExtendWith()
 @DataJpaTest
-internal class TodoTest(@Autowired private var todoRepository: TodoRepository){
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+internal class TodoTest @Autowired constructor(@Autowired private var todoRepository: TodoRepository){
+
+    val todoMapper = Mappers.getMapper(TodoMapper::class.java)
+
 
     @BeforeEach
     fun before(){
@@ -22,7 +27,7 @@ internal class TodoTest(@Autowired private var todoRepository: TodoRepository){
             this.schedule = "2021-08-17 10:25:00"
         }
 
-        val dataTodo = Todo().convertTodo(dataDto1)
+        val dataTodo = todoMapper.toTodo(dataDto1)
         val save = todoRepository.save(dataTodo)
 
         val findById = todoRepository.findById(save.id!!)
@@ -38,7 +43,7 @@ internal class TodoTest(@Autowired private var todoRepository: TodoRepository){
             this.schedule = "2021-08-17 10:48:00"
         }
 
-        val testTodo = Todo().convertTodo(testDto)
+        val testTodo = todoMapper.toTodo(testDto)
 
         val saveTodo= todoRepository.save(testTodo)
 
@@ -49,13 +54,13 @@ internal class TodoTest(@Autowired private var todoRepository: TodoRepository){
     fun testReadTodo(){
         val id : Long = 1
         val findById = todoRepository.findById(id)
-        assertEquals("hi boy",findById.get().title)
+        assertEquals("new 2 data",findById.get().title)
     }
 
 
     @Test
     fun testUpdate(){
-        val findById = todoRepository.findById(1).get()
+        val findById = todoRepository.findById(3).get()
 
         findById.apply {
             this.title = "kim"
@@ -63,18 +68,18 @@ internal class TodoTest(@Autowired private var todoRepository: TodoRepository){
 
         val save = todoRepository.save(findById)
 
-        assertEquals(1,save.id)
+        assertEquals(3,save.id)
         assertEquals("kim",save.title)
     }
 
     @Test
     fun testDelete(){
-        val id : Long = 1
+        val id : Long = 3
         todoRepository.deleteById(id)
 
         val findAll = todoRepository.findAll()
 
-        assertEquals(true,findAll.isEmpty())
+        assertEquals(false,findAll.isEmpty())
         assertEquals(0,findAll.size)
     }
 }
