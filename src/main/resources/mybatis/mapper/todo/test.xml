@@ -1,39 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springdemo.mapper.TodoSqlMapper">
-    <select id="selectMemberCnt" resultType="int">
-        SELECT count(*)
-        FROM todo
-    </select>
 
-    <select id="findPage" resultType="com.example.springdemo.dto.ReadTodoDto">
-    <![CDATA[
-        select * from todo t order by id asc
+    <select id="SelectAllList" parameterType="com.example.springdemo.dto.TodoPageDto"
+            resultType="com.example.springdemo.dto.TodoDto">
+        <![CDATA[
+        select * from todo_entity t
+        where true
         ]]>
-        <if test='offset != null and page_size != null'>
-        LIMIT #{offset}, #{page_size}
+        <if test='title != null and title !=""'>
+            and title like concat('%', #{title}, '%')
         </if>
+        <if test='description != null and description !=""'>
+            and description like concat('%', #{description}, '%')
+        </if>
+
+        order by id asc
+        limit #{start} , #{limit}
     </select>
 
+    <select id="testTableCount" parameterType="com.example.springdemo.dto.TodoPageDto" resultType="long">
+        <![CDATA[
+        SELECT count(*) FROM todo_entity t where true
+        ]]>
+            <if test='title != null and title != ""'>
+                and title LIKE CONCAT('%',#{title},'%')
+            </if>
+            <if test='description != null and description != ""'>
+                and description LIKE CONCAT('%',#{description},'%')
+            </if>
 
-
-    <select id="SelectAllList" parameterType="com.example.springdemo.dto.PageDto" resultType="hashmap">
-        SELECT *
-        FROM ( SELECT ROW_NUMBER() OVER(ORDER by id DESC) AS
-        row_num
-        ,id,title FROM (SELECT * FROM todo WHERE
-        <if test="keyword !=null">
-        title like CONCAT('%',#{keyword},'%') ) T )
-        </if>
-          t
-        <if test="firstRecordIndex !=null and lastRecordIndex != null">
-            WHERE row_num BETWEEN #{firstRecordIndex} AND
-            #{lastRecordIndex}
-        </if>
-    </select>
-
-    <select id="testTableCount" resultType="int">
-        SELECT count(*) FROM todo t WHERE title LIKE CONCAT('%',#{keyword},'%')
     </select>
 
 

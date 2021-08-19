@@ -1,26 +1,18 @@
 package com.example.springdemo.mapstruct
 
 import com.example.springdemo.dto.TodoDto
-import com.example.springdemo.entity.Todo
+import com.example.springdemo.entity.TodoEntity
 import org.mapstruct.*
-import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.stereotype.Component
 
 
-@Mapper(componentModel = "spring", imports = [DateTimeFormat::class])
+@Mapper(componentModel = "spring")
 @Component
 interface TodoMapper {
 
-    @Mappings(
-        Mapping(source = "title", target = "titleName"),
-        Mapping(target = "id",ignore = true)
-    )
-    fun toTodoDto(todo: Todo): TodoDto
+    fun toDTO(todo: TodoEntity): TodoDto
 
-    @Mappings(
-        Mapping(source = "titleName", target = "title"),
-        Mapping(target = "schedule", source = "schedule", dateFormat = "yyyy-MM-dd HH:mm:ss")
-    )
-    fun toTodo(todoDto: TodoDto): Todo
+    @InheritInverseConfiguration
+    fun toEntity(todoDto: TodoDto): TodoEntity
 
 }

@@ -1,8 +1,7 @@
 package com.example.springdemo.mapper
 
-import com.example.springdemo.dto.PageDto
-import com.example.springdemo.dto.ReadTodoDto
-import com.example.springdemo.utils.Pagination
+import com.example.springdemo.dto.TodoPageDto
+import com.example.springdemo.dto.TodoDto
 import org.apache.ibatis.annotations.Mapper
 import org.springframework.stereotype.Repository
 
@@ -11,20 +10,15 @@ import org.springframework.stereotype.Repository
 @Mapper
 interface TodoSqlMapper {
 
-    fun findPage(offset: Int?, page_size: Int?): MutableList<ReadTodoDto?>?
-
     //select * from Test_Table
     @Throws(Exception::class)
-    fun SelectAllList(): MutableList<Map<String?, Any?>?>?
+    fun SelectAllList(): MutableList<TodoDto>
 
     //Paging
     @Throws(Exception::class)
-    fun SelectAllList(pageDto: PageDto?): MutableList<Map<String?, Any?>?>?
+    fun SelectAllList(pageDto: TodoPageDto): MutableList<TodoDto>
 
     //count
     @Throws(Exception::class)
-    fun testTableCount(keyword:String): Int
-
-    @Throws(Exception::class)
-    fun testTableCount(): Int
+    fun testTableCount(search: TodoPageDto): Long
 }
