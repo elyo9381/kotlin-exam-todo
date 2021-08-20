@@ -25,7 +25,7 @@ class TodoService(
         val toEntity = todoMapper.toEntity(todoDto)
         val save = todoRepository.save(toEntity)
 
-        return todoMapper.toDTO(save)
+        return todoMapper.toDto(save)
     }
 
     fun readTodo(id: Long): TodoDto? {
@@ -34,7 +34,7 @@ class TodoService(
         log.info("findById : {}",findById)
 
 
-        return todoRepository.findById(id).get()?.let { todoMapper.toDTO(it) }
+        return todoRepository.findById(id).get()?.let { todoMapper.toDto(it) }
 
 //        return todoRepository.findById(id).get()
 //            ?.let { readTodoMapper.toDto(it)}
@@ -43,14 +43,14 @@ class TodoService(
 
     fun readAllTodo(): MutableList<TodoDto> {
         return todoRepository.findAll()
-            .map { todoMapper.toDTO(it) }
+            .map { todoMapper.toDto(it) }
             .toMutableList()
     }
 
     fun update(todoDto: TodoDto): TodoDto {
         val toEntity = todoMapper.toEntity(todoDto)
         val save = todoRepository.save(toEntity)
-        return todoMapper.toDTO(save)
+        return todoMapper.toDto(save)
     }
 
     fun delete(id: Long): Unit? {

@@ -1,25 +1,26 @@
 package com.example.springdemo.entity
 
 import java.time.LocalDateTime
+import java.util.*
 import javax.persistence.*
+import kotlin.collections.ArrayList
 
 @Entity
-data class UserEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null)
-{
+@Table(name = "tb_user")
+data class UserEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var userno: Long? = null) {
     var name: String? = null
-
-    @OneToMany
-    @JoinColumn(name = "todo_entity.id")
-    var todos = mutableListOf<TodoEntity>()
-
-
-
     var createdAt: LocalDateTime? = null
     var updatedAt: LocalDateTime? = null
 
-    fun addTodos(todoEntity: TodoEntity) {
-        this.todos.add(todoEntity)
+
+    @OneToMany(mappedBy = "user")
+    var todos: MutableList<TodoEntity> = ArrayList()
+//
+    fun addTodo(todo: TodoEntity) {
+        todos.add(todo)
+        todo.user = this
     }
+
 }
 
 

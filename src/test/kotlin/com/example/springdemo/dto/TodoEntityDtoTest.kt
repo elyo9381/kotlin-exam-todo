@@ -17,9 +17,9 @@
 //    @Test
 //    fun todoDtoTest() {
 //        val todoDto = TodoDto().apply {
-//            this.titleName = "테스트"
-//            this.description = ""
-//            this.schedule = "$2020-10-20 13:00:00"
+//            this.title = "테스트 data 1"
+//            this.description = " test description"
+//            this.schedule = LocalDateTime.now()
 //        }
 //        val result = validator.validate(todoDto)
 //        assertEquals(true, result.isEmpty())
@@ -28,7 +28,7 @@
 //    @Test
 //    fun failValidateSchedule() {
 //        val todoDto = TodoDto().apply {
-//            this.titleName = "테스트"
+//            this.title = "테스트"
 //            this.description = ""
 //            this.schedule = "2020-10-2 13:00:00"
 //        }
@@ -39,7 +39,7 @@
 //    @Test
 //    fun failValidateTitle() {
 //        val todoDto = TodoDto().apply {
-//            this.titleName = ""
+//            this.title = ""
 //            this.description = ""
 //            this.schedule = "2020-10-25 13:00:00"
 //        }
@@ -50,7 +50,7 @@
 //    @Test
 //    fun testConvertFromDtoToTodo() {
 //        val todoDto = TodoDto().apply {
-//            this.titleName = "test"
+//            this.title = "test"
 //            this.description = ""
 //            this.schedule = "2020-10-25 13:00:00"
 //        }

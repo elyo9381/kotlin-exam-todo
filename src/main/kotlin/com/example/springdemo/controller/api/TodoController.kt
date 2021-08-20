@@ -36,7 +36,7 @@ class TodoController(
 
         val toEntity = todoMapper.toEntity(todoDto)
         val save = todoRepository.save(toEntity)
-        val toDTO = todoMapper.toDTO(save)
+        val toDTO = todoMapper.toDto(save)
 
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO)
     }
@@ -66,7 +66,7 @@ class TodoController(
 
         val toEntity = todoMapper.toEntity(todoDto)
         val save = todoRepository.save(toEntity)
-        val toDTO = todoMapper.toDTO(save)
+        val toDTO = todoMapper.toDto(save)
 
         return ResponseEntity.ok(todoDto)
     }
