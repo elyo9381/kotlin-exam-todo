@@ -79,25 +79,6 @@ class TodoController(
         return ResponseEntity.ok().build()
     }
 
-    //    @PostMapping(value = ["/list"])
-//    @Throws(Exception::class)
-//    fun AllListView(
-//        @RequestParam(value = "currentPage", required = false, defaultValue = "1") currentPage: Int,
-//        @RequestParam(value = "cntPerPage", required = false, defaultValue = "10") cntPerPage: Int,
-//        @RequestParam(value = "pageSize", required = false, defaultValue = "10") pageSize: Int,
-//        @RequestParam(value = "keyword", required = false) keyword : String): ResponseEntity<Any> {
-//
-//        val listCnt: Int = todoService.testTableCount()
-//        val pageDto = PageDto(currentPage, cntPerPage, pageSize)
-//
-//        pageDto.addTotalRecordCount(listCnt)
-//
-//        val page = pageReadDto().apply {
-//            this.pageList = todoService.SelectAllList(pageDto)
-//            this.pageInfo = pageDto
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(page)
-//    }
     @PostMapping("/list")
     @ResponseBody
     fun AllListView(@RequestBody todoPageDto: TodoPageDto): ResponseEntity<Any> {

@@ -52,6 +52,9 @@ dependencies {
     kapt ("org.mapstruct:mapstruct-processor:1.4.0.Final")
     kaptTest ("org.mapstruct:mapstruct-processor:1.4.0.Final")
 
+    implementation("com.google.code.gson:gson:2.8.5")
+
+
 }
 //
 //allOpen {

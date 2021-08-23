@@ -1,19 +1,15 @@
 package com.example.springdemo.mapstruct
 
 import com.example.springdemo.dto.CarDto
-import com.example.springdemo.dto.TodoDto
 import com.example.springdemo.entity.Car
-import com.example.springdemo.entity.TodoEntity
 import org.mapstruct.*
 import org.springframework.stereotype.Component
 
 
 @Component@Mapper(
-    unmappedTargetPolicy = ReportingPolicy.ERROR,
-    nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL,
     componentModel = "spring"
 )
-abstract class CarMapper {
+interface CarMapper {
 
     @BeforeMapping
     fun setColor(carDto: CarDto, @MappingTarget car: Car) : Unit{
@@ -30,12 +26,14 @@ abstract class CarMapper {
         Mapping(source = "price", target = "modelPrice", numberFormat = "$#.00"),
         Mapping( target = "description", ignore = true)
     )
-    abstract fun toEntity(carDto: CarDto): Car
+    fun toEntity(carDto: CarDto): Car
 
 
-    @AfterMapping
-    fun setDescription(@MappingTarget car: Car) : Unit{
-        car.description = "${car.modelName} ${car.modelColor} !!! $${car.modelPrice}";
+    companion object {
+        @AfterMapping
+        fun setDescription(@MappingTarget car: Car) {
+            car.description = "${car.modelName} ${car.modelColor} !!! $${car.modelPrice}"
+        }
     }
 
 

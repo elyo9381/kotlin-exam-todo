@@ -5,7 +5,7 @@
     <select id="SelectAllList" parameterType="com.example.springdemo.dto.TodoPageDto"
             resultType="com.example.springdemo.dto.TodoDto">
         <![CDATA[
-        select * from todo_entity t
+        select * from tb_todo t
         where true
         ]]>
         <if test='title != null and title !=""'>
@@ -15,13 +15,13 @@
             and description like concat('%', #{description}, '%')
         </if>
 
-        order by id asc
+        order by todono asc
         limit #{start} , #{limit}
     </select>
 
     <select id="testTableCount" parameterType="com.example.springdemo.dto.TodoPageDto" resultType="long">
         <![CDATA[
-        SELECT count(*) FROM todo_entity t where true
+        SELECT count(*) FROM tb_todo t where true
         ]]>
             <if test='title != null and title != ""'>
                 and title LIKE CONCAT('%',#{title},'%')
@@ -33,5 +33,8 @@
     </select>
 
 
+
+
 </mapper>
+
 
