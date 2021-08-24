@@ -16,6 +16,9 @@ data class TodoEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) va
     @ManyToOne()
     @JoinColumn(name = "userno")
     var user : UserEntity? = null
+
+
+
 }
 
 
