@@ -1,51 +1,38 @@
 package com.example.springdemo.controller.api
 
 import com.example.springdemo.dto.*
-import com.example.springdemo.entity.PostEntity
-import com.example.springdemo.mapper.TodoSqlMapper
-import com.example.springdemo.mapstruct.PostMapstruct
-import com.example.springdemo.mapstruct.TodoMapper
-import com.example.springdemo.mapstruct.UserMapper
-import com.example.springdemo.repository.PostRepository
-import com.example.springdemo.repository.TodoRepository
+import com.example.springdemo.mapstruct.UserMapstruct
 import com.example.springdemo.repository.UserRepository
-import com.example.springdemo.service.TodoService
 import com.example.springdemo.service.UserService
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
-import java.util.*
-import javax.validation.Valid
 
 
 @RestController
 @RequestMapping("/api/user")
 class UserController(
     private var userService: UserService,
-    private var userMapper: UserMapper
+    private var userMapstruct: UserMapstruct,
+    private var userRepository: UserRepository
 ) {
 
-    @Autowired
-    private lateinit var userRepository: UserRepository
-
-    private val log = LoggerFactory.getLogger(UserController::class.java)
 
     @PostMapping(path = [""])
-    fun create(@RequestBody userDto: UserDto): ResponseEntity<Any?> {
+    fun create(@RequestBody userDto: UserDTO): ResponseEntity<Any?> {
         val createUser = userService.userSave(userDto)
         return ResponseEntity.status(HttpStatus.CREATED).body(createUser)
     }
 
+    @GetMapping("/mybatis-list")
+    fun users() : ResponseEntity<Any>{
+        val users = userService.users()
+        return ResponseEntity.ok(users)
+    }
 
     @GetMapping("/list")
-    @ResponseBody
     fun AllListView(): ResponseEntity<Any> {
-        val readAllUser: MutableList<UserDto>? = userService.getUsers()
+        val readAllUser = userService.userLists()
         return ResponseEntity.ok(readAllUser)
     }
 

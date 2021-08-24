@@ -14,13 +14,16 @@ class Performance {
 
     private val log = LoggerFactory.getLogger(Performance::class.java)
 
-    @Pointcut("execution(* com.example.springdemo.service.UserService.getUsers(..))")
+    @Pointcut("execution(* com.example.springdemo.service.UserService.userLists(..))")
     fun getUsers(){}
 
     @Pointcut("execution(* com.example.springdemo.service.UserService.userSave(..))")
     fun userSave(){}
 
-    @Around("getUsers() || userSave()")
+    @Pointcut("execution(* com.example.springdemo.service.UserService.users(..))")
+    fun myBatisGetUsers(){}
+
+    @Around("getUsers() || userSave() || myBatisGetUsers()")
     fun calculatePerformanceTime(proceedingJoinPoint: ProceedingJoinPoint): Any? {
         var result: Any? = null
         try {

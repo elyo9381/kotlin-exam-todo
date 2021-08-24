@@ -1,8 +1,6 @@
 package com.example.springdemo.entity
 
-import com.example.springdemo.dto.TodoDto
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import javax.persistence.*
 
 @Entity
@@ -15,7 +13,7 @@ data class TodoEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) va
     var createdAt: LocalDateTime? = null
     var updatedAt: LocalDateTime? = null
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "userno")
     var user : UserEntity? = null
 }

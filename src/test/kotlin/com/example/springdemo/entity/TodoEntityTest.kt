@@ -1,7 +1,7 @@
 package com.example.springdemo.entity
 
-import com.example.springdemo.dto.TodoDto
-import com.example.springdemo.mapstruct.TodoMapper
+import com.example.springdemo.dto.TodoDTO
+import com.example.springdemo.mapstruct.TodoMapstruct
 import com.example.springdemo.repository.TodoRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -18,18 +18,18 @@ import java.time.LocalDateTime
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 internal class TodoEntityTest @Autowired constructor(@Autowired private var todoRepository: TodoRepository){
 
-    val todoMapper = Mappers.getMapper(TodoMapper::class.java)
+    val todoMapstruct = Mappers.getMapper(TodoMapstruct::class.java)
 
 
     @BeforeEach
     fun before(){
-        val dataDto1 = TodoDto().apply {
+        val dataDto1 = TodoDTO().apply {
             this.title = "test title won~~"
             this.description = "base test description"
             this.schedule = LocalDateTime.now()
         }
 
-        val dataTodo = todoMapper.toEntity(dataDto1)
+        val dataTodo = todoMapstruct.toEntity(dataDto1)
         val save = todoRepository.save(dataTodo)
 
         val findById = todoRepository.findById(save.todono!!)
@@ -40,13 +40,13 @@ internal class TodoEntityTest @Autowired constructor(@Autowired private var todo
     @Test
     @DisplayName("todoEntity save test")
     fun testTodoSave() {
-        val testDto = TodoDto().apply {
+        val testDto = TodoDTO().apply {
             this.title = "new save"
             this.description = "hihihi~~~"
             this.schedule = LocalDateTime.now()
         }
 
-        val testTodo = todoMapper.toEntity(testDto)
+        val testTodo = todoMapstruct.toEntity(testDto)
 
         val saveTodo= todoRepository.save(testTodo)
 

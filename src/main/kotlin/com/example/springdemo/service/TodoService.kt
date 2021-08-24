@@ -1,9 +1,9 @@
 package com.example.springdemo.service
 
-import com.example.springdemo.dto.TodoPageDto
-import com.example.springdemo.dto.TodoDto
-import com.example.springdemo.mapper.TodoSqlMapper
-import com.example.springdemo.mapstruct.TodoMapper
+import com.example.springdemo.dto.PageDTO
+import com.example.springdemo.dto.TodoDTO
+import com.example.springdemo.mapper.TodoMapper
+import com.example.springdemo.mapstruct.TodoMapstruct
 import com.example.springdemo.repository.TodoRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -13,44 +13,44 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class TodoService(
     private var todoRepository: TodoRepository,
-    private var todoMapper: TodoMapper,
-    private var todoSqlMapper: TodoSqlMapper
+    private var todoMapstruct: TodoMapstruct,
+    private var todoMapper: TodoMapper
 ) {
 
     private val log = LoggerFactory.getLogger(TodoService::class.java)
 
     @Transactional
-    fun createTodo(todoDto: TodoDto): TodoDto {
+    fun createTodo(todoDto: TodoDTO): TodoDTO {
 
-        val toEntity = todoMapper.toEntity(todoDto)
+        val toEntity = todoMapstruct.toEntity(todoDto)
         val save = todoRepository.save(toEntity)
 
-        return todoMapper.toDto(save)
+        return todoMapstruct.toDto(save)
     }
 
-    fun readTodo(id: Long): TodoDto? {
+    fun readTodo(id: Long): TodoDTO? {
         val findById = todoRepository.findById(id).get()
 
         log.info("findById : {}",findById)
 
 
-        return todoRepository.findById(id).get()?.let { todoMapper.toDto(it) }
+        return todoRepository.findById(id).get()?.let { todoMapstruct.toDto(it) }
 
 //        return todoRepository.findById(id).get()
 //            ?.let { readTodoMapper.toDto(it)}
     }
 
 
-    fun readAllTodo(): MutableList<TodoDto> {
+    fun readAllTodo(): MutableList<TodoDTO> {
         return todoRepository.findAll()
-            .map { todoMapper.toDto(it) }
+            .map { todoMapstruct.toDto(it) }
             .toMutableList()
     }
 
-    fun update(todoDto: TodoDto): TodoDto {
-        val toEntity = todoMapper.toEntity(todoDto)
+    fun update(todoDto: TodoDTO): TodoDTO {
+        val toEntity = todoMapstruct.toEntity(todoDto)
         val save = todoRepository.save(toEntity)
-        return todoMapper.toDto(save)
+        return todoMapstruct.toDto(save)
     }
 
     fun delete(id: Long): Unit? {
@@ -59,8 +59,8 @@ class TodoService(
 
 
     @Throws(Exception::class)
-    fun SelectAllList(todoPageDto: TodoPageDto): MutableList<TodoDto> {
-        return todoSqlMapper.SelectAllList()
+    fun SelectAllList(pageDto: PageDTO): MutableList<TodoDTO> {
+        return todoMapper.SelectAllList()
     }
 
 }

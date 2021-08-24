@@ -2,29 +2,22 @@ package com.example.springdemo.controller.api
 
 import com.example.springdemo.dto.*
 import com.example.springdemo.entity.PostEntity
-import com.example.springdemo.mapper.TodoSqlMapper
+import com.example.springdemo.mapper.TodoMapper
 import com.example.springdemo.mapstruct.PostMapstruct
-import com.example.springdemo.mapstruct.TodoMapper
 import com.example.springdemo.repository.PostRepository
-import com.example.springdemo.repository.TodoRepository
 import com.example.springdemo.service.TodoService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
-import java.util.*
-import javax.validation.Valid
 
 
 @RestController
 @RequestMapping("/api/post")
 class PostController(
     private var todoService: TodoService,
-    var todoSqlMapper: TodoSqlMapper
+    var todoMapper: TodoMapper
 ) {
     @Autowired
     private lateinit var postMapstruct: PostMapstruct
@@ -35,7 +28,7 @@ class PostController(
     private val log = LoggerFactory.getLogger(PostController::class.java)
 
     @PostMapping(path = [""])
-    fun create(@RequestBody postDto: PostDto): ResponseEntity<Any?> {
+    fun create(@RequestBody postDto: PostDTO): ResponseEntity<Any?> {
 //        val createTodoDto = todoService.createTodo(todoDto)
 
         val toEntity = postMapstruct.toEntity(postDto)

@@ -1,7 +1,7 @@
 package com.example.springdemo.mapstruct
 
-import com.example.springdemo.dto.CarDto
-import com.example.springdemo.entity.Car
+import com.example.springdemo.dto.CarDTO
+import com.example.springdemo.entity.CarEntity
 import org.mapstruct.*
 import org.springframework.stereotype.Component
 
@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component
 @Component@Mapper(
     componentModel = "spring"
 )
-interface CarMapper {
+interface CarMapstruct {
 
     @BeforeMapping
-    fun setColor(carDto: CarDto, @MappingTarget car: Car) : Unit{
+    fun setColor(carDto: CarDTO, @MappingTarget carEntity: CarEntity) : Unit{
         if (carDto.name.equals("bmw x4")) {
-            car.modelColor = "red"
+            carEntity.modelColor = "red"
         } else {
-            car.modelColor = "black"
+            carEntity.modelColor = "black"
         }
     }
 
@@ -26,13 +26,13 @@ interface CarMapper {
         Mapping(source = "price", target = "modelPrice", numberFormat = "$#.00"),
         Mapping( target = "description", ignore = true)
     )
-    fun toEntity(carDto: CarDto): Car
+    fun toEntity(carDto: CarDTO): CarEntity
 
 
     companion object {
         @AfterMapping
-        fun setDescription(@MappingTarget car: Car) {
-            car.description = "${car.modelName} ${car.modelColor} !!! $${car.modelPrice}"
+        fun setDescription(@MappingTarget carEntity: CarEntity) {
+            carEntity.description = "${carEntity.modelName} ${carEntity.modelColor} !!! $${carEntity.modelPrice}"
         }
     }
 

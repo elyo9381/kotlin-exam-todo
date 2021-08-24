@@ -2,7 +2,7 @@ package com.example.springdemo.dto
 
 import com.example.springdemo.entity.TodoEntity
 import com.example.springdemo.entity.UserEntity
-import com.example.springdemo.mapstruct.UserMapper
+import com.example.springdemo.mapstruct.UserMapstruct
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 
 internal class testUserMapstruct {
 
-    val userMapper = Mappers.getMapper(UserMapper::class.java)
+    val userMapstruct = Mappers.getMapper(UserMapstruct::class.java)
 
     @Test
     @DisplayName("Entity서 Dto로 변환하는 테스트")
@@ -36,7 +36,7 @@ internal class testUserMapstruct {
 //        entity.addTodo(dataEntity)
 
         /* when */
-        val toTodoDto = userMapper.toDto(entity)
+        val toTodoDto = userMapstruct.toDto(entity)
         /* then */
         println(toTodoDto)
         assertThat(toTodoDto).isNotNull
@@ -46,14 +46,14 @@ internal class testUserMapstruct {
     @DisplayName("DTO에서 Entity로 변환하는 테스트")
     fun `test dto to entity`() {
         /* given */
-        val testDto = UserDto().apply {
+        val testDto = UserDTO().apply {
             this.userno= null
             this.name = "title"
             this.createdAt = null
             this.updatedAt = null
         }
         /* when */
-        val toEntity = userMapper.toEntity(testDto)
+        val toEntity = userMapstruct.toEntity(testDto)
 
         println(toEntity)
         assertThat(toEntity).isNotNull

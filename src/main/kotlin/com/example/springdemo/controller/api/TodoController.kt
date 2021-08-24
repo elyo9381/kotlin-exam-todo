@@ -1,8 +1,8 @@
 package com.example.springdemo.controller.api
 
 import com.example.springdemo.dto.*
-import com.example.springdemo.mapper.TodoSqlMapper
-import com.example.springdemo.mapstruct.TodoMapper
+import com.example.springdemo.mapper.TodoMapper
+import com.example.springdemo.mapstruct.TodoMapstruct
 import com.example.springdemo.repository.TodoRepository
 import com.example.springdemo.service.TodoService
 import org.slf4j.LoggerFactory
@@ -20,10 +20,10 @@ import javax.validation.Valid
 @RequestMapping("/api/todo")
 class TodoController(
     private var todoService: TodoService,
-    var todoSqlMapper: TodoSqlMapper
+    var todoMapper: TodoMapper
 ) {
     @Autowired
-    private lateinit var todoMapper: TodoMapper
+    private lateinit var todoMapstruct: TodoMapstruct
 
     @Autowired
     private lateinit var todoRepository: TodoRepository
@@ -31,12 +31,12 @@ class TodoController(
     private val log = LoggerFactory.getLogger(TodoController::class.java)
 
     @PostMapping(path = [""])
-    fun create(@Valid @RequestBody todoDto: TodoDto): ResponseEntity<Any?> {
+    fun create(@Valid @RequestBody todoDto: TodoDTO): ResponseEntity<Any?> {
 //        val createTodoDto = todoService.createTodo(todoDto)
 
-        val toEntity = todoMapper.toEntity(todoDto)
+        val toEntity = todoMapstruct.toEntity(todoDto)
         val save = todoRepository.save(toEntity)
-        val toDTO = todoMapper.toDto(save)
+        val toDTO = todoMapstruct.toDto(save)
 
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO)
     }
@@ -57,18 +57,18 @@ class TodoController(
 
 
     @PutMapping(path = [""]) // create = 201 , update = 200
-    fun update(@Valid @RequestBody todoDto: TodoDto, binding: BindingResult): ResponseEntity<Any?> {
+    fun update(@Valid @RequestBody todoDto: TodoDTO, binding: BindingResult): ResponseEntity<Any?> {
 
         if (binding.hasErrors()) {
 
         }
 //      val update = todoService.update(todoDto)
 
-        val toEntity = todoMapper.toEntity(todoDto)
+        val toEntity = todoMapstruct.toEntity(todoDto)
         val save = todoRepository.save(toEntity)
-        val toDTO = todoMapper.toDto(save)
+        val toDto = todoMapstruct.toDto(save)
 
-        return ResponseEntity.ok(todoDto)
+        return ResponseEntity.ok(toDto)
     }
 
     @DeleteMapping(path = ["/{id}"])
@@ -81,14 +81,14 @@ class TodoController(
 
     @PostMapping("/list")
     @ResponseBody
-    fun AllListView(@RequestBody todoPageDto: TodoPageDto): ResponseEntity<Any> {
-        log.info("requestPageDto : {}", todoPageDto)
+    fun AllListView(@RequestBody pageDto: PageDTO): ResponseEntity<Any> {
+        log.info("requestPageDto : {}", pageDto)
 
-        todoService.SelectAllList(todoPageDto)
+        todoService.SelectAllList(pageDto)
 
-        val pageRequest = PageRequest.of(todoPageDto.startPage, todoPageDto.limit)
-        val list = todoSqlMapper.SelectAllList(todoPageDto)
-        val count = todoSqlMapper.testTableCount(todoPageDto)
+        val pageRequest = PageRequest.of(pageDto.startPage, pageDto.limit)
+        val list = todoMapper.SelectAllList(pageDto)
+        val count = todoMapper.testTableCount(pageDto)
 
         return ResponseEntity.ok(PageImpl(list, pageRequest, count))
     }

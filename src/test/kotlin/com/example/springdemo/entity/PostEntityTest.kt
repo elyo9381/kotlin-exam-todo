@@ -1,7 +1,7 @@
 package com.example.springdemo.entity
 
 import com.example.springdemo.config.GsonConfig
-import com.example.springdemo.dto.PostDto
+import com.example.springdemo.dto.PostDTO
 import com.example.springdemo.mapstruct.PostMapstruct
 import com.example.springdemo.repository.PostRepository
 import com.google.gson.Gson
@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-internal class PostEntityTes @Autowired constructor(@Autowired private var postRepository: PostRepository) {
+internal class PostEntityTest @Autowired constructor(@Autowired private var postRepository: PostRepository) {
 
     val postMapstruct = Mappers.getMapper(PostMapstruct::class.java)
     private val gson = Gson()
@@ -45,15 +45,15 @@ internal class PostEntityTes @Autowired constructor(@Autowired private var postR
 
         val changedGson = gson.fromJson(carStr, JsonObject::class.java)
 
-        val testPostDto = PostDto().apply {
+        val testPostDTO = PostDTO().apply {
             this.name = "Won"
             this.title = "TitleWon"
             this.car = changedGson
             this.createdDate = LocalDateTime.now()
         }
 
-        println(testPostDto)
-        val toEntity = postMapstruct.toEntity(testPostDto)
+        println(testPostDTO)
+        val toEntity = postMapstruct.toEntity(testPostDTO)
 
         return postRepository.save(toEntity)
 
