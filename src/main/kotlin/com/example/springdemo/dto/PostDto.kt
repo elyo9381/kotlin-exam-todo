@@ -16,6 +16,8 @@ data class PostDto(var postno: Long? = null) {
 
     var createdDate: LocalDateTime? = null
 
+    var price : Int ? =null
+
     override fun toString(): String {
         return "PostDto(postno=$postno, name=$name, title=$title, car=$car, createdDate=$createdDate)"
     }

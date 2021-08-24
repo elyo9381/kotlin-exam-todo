@@ -13,7 +13,7 @@ data class UserEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) va
     var updatedAt: LocalDateTime? = null
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     var todos: MutableList<TodoEntity> = ArrayList()
 //
     fun addTodo(todo: TodoEntity) {

@@ -18,6 +18,8 @@ data class PostEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) va
 
     var createdDate: LocalDateTime? = null
 
+    var price : Int ? =null
+
 
     override fun toString(): String {
         return "PostEntity(postno=$postno, name=$name, title=$title, car=$car, createdDate=$createdDate)"

@@ -15,11 +15,9 @@ data class TodoEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) va
     var createdAt: LocalDateTime? = null
     var updatedAt: LocalDateTime? = null
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userno")
     var user : UserEntity? = null
-
-
 }
 
 

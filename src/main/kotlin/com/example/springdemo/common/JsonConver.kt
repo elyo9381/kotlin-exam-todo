@@ -13,7 +13,6 @@ class JsonConver : AttributeConverter<JsonObject?, String> {
 
     override fun convertToDatabaseColumn(attribute: JsonObject?): String? {
         if( attribute == null ) return null
-
         return attribute.toString()
 
 //        try {
