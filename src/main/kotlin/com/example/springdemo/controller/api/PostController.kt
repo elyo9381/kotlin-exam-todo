@@ -33,7 +33,7 @@ class PostController(
 
         val toEntity = postMapstruct.toEntity(postDto)
         val save = postRepository.save(toEntity)
-        val toDTO = postMapstruct.toDto(save)
+        val toDTO = postMapstruct.toDTO(save)
 
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO)
     }
@@ -44,7 +44,7 @@ class PostController(
         val findById: PostEntity = postRepository.findById(id).get()
 
 
-        val toDto = postMapstruct.toDto(findById)
+        val toDto = postMapstruct.toDTO(findById)
         // 뭐야 noSuchElementException난다.
 //        val get = postRepository.findById(id).get()
 

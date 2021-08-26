@@ -3,6 +3,7 @@ package com.example.springdemo.service
 import com.example.springdemo.dto.PageDTO
 import com.example.springdemo.dto.TodoDTO
 import com.example.springdemo.mapper.TodoMapper
+import com.example.springdemo.mapstruct.CycleAvoidingMappingContext
 import com.example.springdemo.mapstruct.TodoMapstruct
 import com.example.springdemo.repository.TodoRepository
 import org.slf4j.LoggerFactory
@@ -22,10 +23,10 @@ class TodoService(
     @Transactional
     fun createTodo(todoDto: TodoDTO): TodoDTO {
 
-        val toEntity = todoMapstruct.toEntity(todoDto)
+        val toEntity = todoMapstruct.toEntity(todoDto, CycleAvoidingMappingContext())
         val save = todoRepository.save(toEntity)
 
-        return todoMapstruct.toDto(save)
+        return todoMapstruct.toDTO(save,CycleAvoidingMappingContext())
     }
 
     fun readTodo(id: Long): TodoDTO? {
@@ -34,7 +35,7 @@ class TodoService(
         log.info("findById : {}",findById)
 
 
-        return todoRepository.findById(id).get()?.let { todoMapstruct.toDto(it) }
+        return todoRepository.findById(id).get()?.let { todoMapstruct.toDTO(it,CycleAvoidingMappingContext()) }
 
 //        return todoRepository.findById(id).get()
 //            ?.let { readTodoMapper.toDto(it)}
@@ -43,14 +44,14 @@ class TodoService(
 
     fun readAllTodo(): MutableList<TodoDTO> {
         return todoRepository.findAll()
-            .map { todoMapstruct.toDto(it) }
+            .map { todoMapstruct.toDTO(it,CycleAvoidingMappingContext()) }
             .toMutableList()
     }
 
     fun update(todoDto: TodoDTO): TodoDTO {
-        val toEntity = todoMapstruct.toEntity(todoDto)
+        val toEntity = todoMapstruct.toEntity(todoDto,CycleAvoidingMappingContext())
         val save = todoRepository.save(toEntity)
-        return todoMapstruct.toDto(save)
+        return todoMapstruct.toDTO(save,CycleAvoidingMappingContext())
     }
 
     fun delete(id: Long): Unit? {

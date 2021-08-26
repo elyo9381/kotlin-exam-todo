@@ -2,11 +2,14 @@ package com.example.springdemo.common
 
 import com.google.gson.Gson
 import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.google.gson.internal.Streams
 import com.google.gson.stream.JsonWriter
 import net.minidev.json.JSONArray
 import org.apache.ibatis.type.BaseTypeHandler
 import org.apache.ibatis.type.JdbcType
+import org.apache.ibatis.type.MappedTypes
+import org.apache.ibatis.type.TypeHandler
 import java.sql.CallableStatement
 import java.sql.PreparedStatement
 import java.sql.ResultSet
@@ -15,9 +18,9 @@ import java.io.IOException
 import java.io.StringWriter
 
 
-
-
-class JSONTypeHandler : BaseTypeHandler<JsonArray?>() {
+@MappedTypes(JsonObject::class)
+class JsonObjectTypeHandler : TypeHandler<JsonObject?>
+{
 
     /**
      * statement : sql문을 string으로 함수를 통해 정적인 시점에서 sql문을 전달하는 타입
@@ -34,23 +37,21 @@ class JSONTypeHandler : BaseTypeHandler<JsonArray?>() {
      *
      * CallableStatement :  데이터베이스 내의 스토어드 프로시저(Stored Procedure)를 호출할수있는 스테이트먼트
      *
-     * Streams : gson에서 object model or stream을 통해서 json을 읽고 쓸수 있습니다.
-     * Streaming access는  JsonReader, JsonWriter를 이용할수있습니다.
-     * object model는 JsonElement class hierarchy를 이용할수있습니다.
-     *
-     *
+     * Streams : gson에서 object model or stream 을 통해서 json 을 읽고 쓸수 있습니다.
+     * Streaming access는  JsonReader, JsonWriter 를 이용할수있습니다.
+     * object model는 JsonElement class hierarchy 를 이용할수있습니다.
      *
      */
 
     private val gson = Gson()
 
-    override fun setNonNullParameter(ps: PreparedStatement?, i: Int, parameter: JsonArray?, jdbcType: JdbcType?) {
+    override fun setParameter(ps: PreparedStatement?, i: Int, parameter: JsonObject?, jdbcType: JdbcType?) {
         try {
             // json을 만드는 과정
             val sw = StringWriter()
             val jsonWriter = JsonWriter(sw)
             jsonWriter.isLenient = false
-            // Streams 는 JsonElement를 이용할수있으며 JsonArray를 이용할수있습니다.  JsonArray 생성
+            // Streams 는 JsonElement를 이용할수있으며 JsonObject를 이용할수있습니다.  JsonObject 생성
             Streams.write(parameter, jsonWriter)
             // jdbc에 sql 등록
             ps!!.setString(i, sw.toString())
@@ -59,18 +60,19 @@ class JSONTypeHandler : BaseTypeHandler<JsonArray?>() {
         }
     }
 
-    override fun getNullableResult(rs: ResultSet?, columnName: String?): JsonArray? {
+    override fun getResult(rs: ResultSet?, columnName: String?): JsonObject? {
         val string = rs?.getString(columnName)
-        return gson.fromJson(string,JsonArray::class.java)
+        return gson.fromJson(string, JsonObject::class.java)
     }
 
-    override fun getNullableResult(rs: ResultSet?, columnIndex: Int): JsonArray? {
+    override fun getResult(rs: ResultSet?, columnIndex: Int): JsonObject? {
         val string = rs?.getString(columnIndex)
-        return gson.fromJson(string,JsonArray::class.java)
+        return gson.fromJson(string, JsonObject::class.java)
     }
 
-    override fun getNullableResult(cs: CallableStatement?, columnIndex: Int): JsonArray? {
+    override fun getResult(cs: CallableStatement?, columnIndex: Int): JsonObject? {
         val string = cs?.getString(columnIndex)
-        return gson.fromJson(string,JsonArray::class.java)
+        return gson.fromJson(string, JsonObject::class.java)
     }
+
 }

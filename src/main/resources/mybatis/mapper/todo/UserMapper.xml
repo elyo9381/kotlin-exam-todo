@@ -2,10 +2,76 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springdemo.mapper.UserMapper">
 
+
+<!--     n+1 mybatis     -->
+<!--    <resultMap id="userlistsAll" type="com.example.springdemo.dto.UserDTO">-->
+<!--        <collection property="todos" ofType="com.example.springdemo.dto.TodoDTO" column="userno" select="readTodos">-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+
+<!--    <select id="Users" resultMap="userlistsAll">-->
+<!--        <![CDATA[-->
+<!--            select * from tb_user tu where true-->
+<!--        ]]>-->
+<!--    </select>-->
+
+<!--    <select id="readTodos" resultType="com.example.springdemo.dto.TodoDTO">-->
+<!--        <![CDATA[-->
+<!--            select * from tb_todo tt where tt.userno = #{userno}-->
+<!--        ]]>-->
+<!--    </select>-->
+
+
+<!--    <resultMap id="userlistsAll" type="com.example.springdemo.dto.UserDTO">-->
+<!--        <id property="userno" column="uno" />-->
+<!--        <result property="name" column="uname"/>-->
+<!--        <result property="createdAt" column="ucreatedAt"/>-->
+<!--        <result property="updatedAt" column="uupdatedAt"/>-->
+<!--        <result property="info" column="uinfo"/>-->
+<!--        <collection property="todos" ofType="com.example.springdemo.dto.TodoDTO">-->
+<!--            <id property="todono" column="tno"/>-->
+<!--            <result property="title" column="ttitle"/>-->
+<!--            <result property="description" column="tdescription"/>-->
+<!--            <result property="schedule" column="tschedule"/>-->
+<!--            <result property="createdAt" column="tcreatedAt"/>-->
+<!--            <result property="updatedAt" column="tupdatedAt"/>-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+
+
+<!--    <select id="Users" parameterType="com.example.springdemo.dto.PageDTO" resultMap="userlistsAll">-->
+<!--        <![CDATA[-->
+<!--        select tu.userno uno,-->
+<!--               tu.name uname,-->
+<!--               tu.created_at ucreatedAt,-->
+<!--               tu.updated_at uupdatedAt,-->
+<!--               tu.info uinfo,-->
+<!--               tt.todono tno,-->
+<!--               tt.title ttitle,-->
+<!--               tt.description tdescription,-->
+<!--               tt.schedule tschedule,-->
+<!--               tt.created_at tcreatedAt,-->
+<!--               tt.updated_at tupdatedAt-->
+<!--        from tb_user tu left outer join tb_todo tt on tu.userno = tt.userno-->
+<!--        where true-->
+<!--        ]]>-->
+<!--        <if test='title != null and title !=""'>-->
+<!--            and title like concat('%', #{title}, '%')-->
+<!--        </if>-->
+<!--        <if test='description != null and description !=""'>-->
+<!--            and description like concat('%', #{description}, '%')-->
+
+<!--            order by usersno asc-->
+<!--            limit #{start} , #{limit}-->
+<!--        </if>-->
+<!--    </select>-->
+
+
+
+
     <select id="Users" parameterType="com.example.springdemo.dto.PageDTO" resultType="com.example.springdemo.dto.UserDTO">
         <![CDATA[
-        select * from
-                     tb_user t
+        select * from tb_user tu left outer join tb_todo tt on tu.userno = tt.userno
         where true
         ]]>
         <if test='title != null and title !=""'>
@@ -14,12 +80,12 @@
         <if test='description != null and description !=""'>
             and description like concat('%', #{description}, '%')
 
-        order by usersno asc
-        limit #{start} , #{limit}
+            order by usersno asc
+            limit #{start} , #{limit}
         </if>
     </select>
 
-    <select id="testTableCount" parameterType="com.example.springdemo.dto.PageDTO" resultType="long">
+    <select id="tetTableCount" parameterType="com.example.springdemo.dto.PageDTO" resultType="long">
         <![CDATA[
         SELECT count(*) FROM tb_todo t where true
         ]]>
@@ -30,6 +96,13 @@
                 and description LIKE CONCAT('%',#{description},'%')
             </if>
 
+    </select>
+
+
+    <select id="userAll"  resultType="com.example.springdemo.dto.UserDTO">
+        <![CDATA[
+        SELECT * FROM tb_User tbu where true
+        ]]>
     </select>
 
 

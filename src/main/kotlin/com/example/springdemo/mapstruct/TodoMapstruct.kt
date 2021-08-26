@@ -6,13 +6,13 @@ import org.mapstruct.*
 import org.springframework.stereotype.Component
 
 
-@Mapper(componentModel = "spring",uses=[TodoMapstruct::class])
+@Mapper(componentModel = "spring")
 @Component
-interface TodoMapstruct : EntityMapstruct<TodoDTO,TodoEntity>{
+interface TodoMapstruct {
 
-    override fun toDto(todo: TodoEntity): TodoDTO
+    fun toDTO(todo: TodoEntity, @Context context: CycleAvoidingMappingContext): TodoDTO
 
     @InheritInverseConfiguration
-    override fun toEntity(todoDto: TodoDTO): TodoEntity
+    fun toEntity(todoDto: TodoDTO, @Context context: CycleAvoidingMappingContext): TodoEntity
 
 }

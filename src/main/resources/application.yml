@@ -25,6 +25,7 @@ spring:
         useServerPrepStmts: true
     username: root
     password: 1234
+
   mvc:
     converters.preferred-json-mapper: "gson"
     format.date-time: "yyyy-MM-dd HH:mm:ss"

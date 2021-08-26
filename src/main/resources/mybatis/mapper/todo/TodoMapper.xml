@@ -34,6 +34,11 @@
 
 
 
+    <select id="todoAll" resultType="com.example.springdemo.dto.TodoDTO">
+        <![CDATA[
+        SELECT * FROM tb_todo t where true
+        ]]>
+    </select>
 
 </mapper>
 

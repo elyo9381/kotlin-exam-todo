@@ -7,13 +7,14 @@ import org.mapstruct.*
 import org.springframework.stereotype.Component
 
 
-@Mapper(componentModel = "spring",uses=[PostMapstruct::class,JsonObjectConverter::class])
+@Mapper(componentModel = "spring",uses=[JsonObjectConverter::class])
 @Component
-interface PostMapstruct : EntityMapstruct<PostDTO,PostEntity>{
+interface PostMapstruct {
 
-    override fun toDto(postEntity: PostEntity): PostDTO
+
+    fun toDTO(postEntity: PostEntity): PostDTO
 
     @InheritInverseConfiguration
-    override fun toEntity(postDto: PostDTO): PostEntity
+     fun toEntity(postDto: PostDTO): PostEntity
 
 }

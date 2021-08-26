@@ -2,6 +2,7 @@ package com.example.springdemo.dto
 
 import com.example.springdemo.entity.TodoEntity
 import com.example.springdemo.entity.UserEntity
+import com.example.springdemo.mapstruct.CycleAvoidingMappingContext
 import com.example.springdemo.mapstruct.UserMapstruct
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
@@ -36,7 +37,7 @@ internal class testUserMapstruct {
 //        entity.addTodo(dataEntity)
 
         /* when */
-        val toTodoDto = userMapstruct.toDto(entity)
+        val toTodoDto = userMapstruct.toDTO(entity, CycleAvoidingMappingContext())
         /* then */
         println(toTodoDto)
         assertThat(toTodoDto).isNotNull
@@ -53,7 +54,7 @@ internal class testUserMapstruct {
             this.updatedAt = null
         }
         /* when */
-        val toEntity = userMapstruct.toEntity(testDto)
+        val toEntity = userMapstruct.toEntity(testDto,CycleAvoidingMappingContext())
 
         println(toEntity)
         assertThat(toEntity).isNotNull

@@ -20,4 +20,10 @@ interface UserMapper {
     //count
     @Throws(Exception::class)
     fun testTableCount(search: PageDTO): Long
+
+    // userAll
+    @Throws(Exception::class)
+    fun userAll(): MutableList<UserDTO>
+
+
 }

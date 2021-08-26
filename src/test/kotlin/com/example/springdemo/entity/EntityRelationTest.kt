@@ -1,11 +1,16 @@
 package com.example.springdemo.entity
 
+import com.example.springdemo.config.GsonConfig
 import com.example.springdemo.dto.TodoDTO
 import com.example.springdemo.dto.UserDTO
+import com.example.springdemo.mapstruct.CycleAvoidingMappingContext
 import com.example.springdemo.mapstruct.TodoMapstruct
 import com.example.springdemo.mapstruct.UserMapstruct
 import com.example.springdemo.repository.TodoRepository
 import com.example.springdemo.repository.UserRepository
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.DisplayName
@@ -29,6 +34,8 @@ internal class EntityRelationTest @Autowired constructor(
     val todoMapstruct = Mappers.getMapper(TodoMapstruct::class.java)
     val userMapstruct = Mappers.getMapper(UserMapstruct::class.java)
 
+    private val gson = Gson()
+
     @Autowired
     private lateinit var entityManager: TestEntityManager
 
@@ -44,12 +51,12 @@ internal class EntityRelationTest @Autowired constructor(
             this.updatedAt = LocalDateTime.now()
         }
 
-        val userData = userMapstruct.toEntity(userDto)
+        val userData = userMapstruct.toEntity(userDto, CycleAvoidingMappingContext())
         entityManager.persist(userData)
         entityManager.flush()
 
         val findUserEntity = entityManager.find(UserEntity::class.java, userData.userno)
-        val userDto2 = userMapstruct.toDto(findUserEntity)
+        val userDto2 = userMapstruct.toDTO(findUserEntity, CycleAvoidingMappingContext())
 
 
         val dataDto1 = TodoDTO().apply {
@@ -77,97 +84,68 @@ internal class EntityRelationTest @Autowired constructor(
             this.createdAt = LocalDateTime.now()
             this.updatedAt = LocalDateTime.now()
         }
-//
-//
-        val todoData1 = todoMapstruct.toEntity(dataDto1)
-        val todoData2 = todoMapstruct.toEntity(dataDto2)
-        val todoData3 = todoMapstruct.toEntity(dataDto3)
+        val todoData1 = todoMapstruct.toEntity(dataDto1, CycleAvoidingMappingContext())
+        val todoData2 = todoMapstruct.toEntity(dataDto2, CycleAvoidingMappingContext())
+        val todoData3 = todoMapstruct.toEntity(dataDto3, CycleAvoidingMappingContext())
 
-//
         findUserEntity.todos.add(todoData1)
         findUserEntity.todos.add(todoData2)
         findUserEntity.todos.add(todoData3)
 
+
+        val jsonObject1: String = """
+            {
+                "todono": 1,
+                "title": "test title won~~",
+                "description": "base test description",
+                "schedule": "2021-08-26 06:06:00"
+            }"""
+        val jsonObject2: String = """{
+            "todono": 2,
+            "title": "test won2~~",
+            "description": "base test description",
+            "schedule": "2021-08-26 06:06:00"
+        }"""
+        val jsonObject3: String = """{
+            "todono": 3,
+            "title": "test won3~~",
+            "description": "base test description",
+            "schedule": "2021-08-26 06:06:00",
+            "createdAt": "2021-08-26 06:06:00",
+            "updatedAt": "2021-08-26 06:06:00"
+        }
+        """
+
+        val fromJson1 = gson.fromJson(jsonObject1, JsonObject::class.java)
+        val fromJson2 = gson.fromJson(jsonObject2, JsonObject::class.java)
+        val fromJson3 = gson.fromJson(jsonObject3, JsonObject::class.java)
+
+        val jsonArray = JsonArray().apply {
+            add(fromJson1)
+            add(fromJson2)
+            add(fromJson3)
+        }
+
+        findUserEntity.todolist = jsonArray
+
         val persist1 = entityManager.persist(todoData1)
         val persist2 = entityManager.persist(todoData2)
         val persist3 = entityManager.persist(todoData3)
-//
 
-
-//
-//        val boardData = BoardEntity().apply {
-//            this.boardno = null
-//            this.title = "Board test ~~"
-//            this.createAt = LocalDateTime.now()
-//        }
-
-//        entityManager.persist(userData)
-//        boardData.user = userData
-//        val saveboard = entityManager.persist(boardData)
+        entityManager.persist(findUserEntity)
 
         entityManager.flush()
+//        entityManager.clear()
 
-        val findTodoEntity = entityManager.find(TodoEntity::class.java, persist1.todono)
-
-//        val toDtoList = todoMapper.toDtoList(userData.todos)
-
-//        log.info(" toDtoList :{}", toDtoList)
-
-
-        val savedTodoDto = todoMapstruct.toDto(findTodoEntity)
-        val savedUserDto = userMapstruct.toDto(findUserEntity)
 //
-        log.info(" savedTodoDto :{}", savedTodoDto)
-        log.info(" savedUserDto :{}", savedUserDto)
+//        val findTodoEntity = entityManager.find(TodoEntity::class.java, persist1.todono)
+//        val UserFindAndSave = entityManager.find(UserEntity::class.java, findUserEntity.userno)
 //
-//        println(savedTodoDto)
-//        println(savedUserDto)
-
-
-//        val saveBoard = entityManager.find(BoardEntity::class.java, saveboard.boardno)
 //
-//        log.info(" saveBoard :{}", saveBoard)
-//
-//        assertEquals(1, saveBoard.user!!.userno)
-//        assertEquals("Board test ~~", saveBoard.title)
-//        assertEquals("won1",userData.name)
-//
-//        assertNotNull(savedTodoDto.user)
-//        assertEquals(1, savedTodoDto.user!!.userno)
-//        assertEquals("test title won~~", savedTodoDto.title)
-//        assertEquals("won1",userData.name)
-
-    }
-
-
-    @Test
-    @DisplayName("boardEntity ,userEntity relation test")
-    fun testBoardEntity() {
-
-        val userData = userRepository.findById(1).get()
-
-        val boardData = BoardEntity().apply {
-            this.boardno = null
-            this.title = "Board test ~~"
-            this.createAt = LocalDateTime.now()
-        }
-
-        entityManager.persist(userData)
-        boardData.user = userData
-        val persist1 = entityManager.persist(boardData)
-        entityManager.flush()
-
-
-        val find = entityManager.find(BoardEntity::class.java, persist1.boardno)
-        val savedUserDto = userMapstruct.toDto(userData)
-
-        log.info(" savedTodoDto :{}", find)
-        log.info(" savedUserDto :{}", savedUserDto)
-
-        assertNotNull(find.user)
-        assertEquals(1, find.user!!.userno)
-        assertEquals("Board test ~~", find.title)
-        assertEquals("Won5",userData.name)
+//        val savedTodoDto = todoMapstruct.toDTO(findTodoEntity, CycleAvoidingMappingContext())
+//        val savedUserDto = userMapstruct.toDTO(UserFindAndSave, CycleAvoidingMappingContext())
+//        log.info(" savedTodoDto :{}", savedTodoDto)
+//        log.info(" savedUserDto :{}", savedUserDto)
 
     }
 

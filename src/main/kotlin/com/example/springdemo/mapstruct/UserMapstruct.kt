@@ -5,15 +5,14 @@ import com.example.springdemo.entity.UserEntity
 import org.mapstruct.*
 import org.springframework.stereotype.Component
 
-@Mapper(componentModel = "spring",uses=[UserMapstruct::class])
+
+@Mapper(componentModel = "spring")
 @Component
-interface UserMapstruct :  EntityMapstruct<UserDTO,UserEntity>{
+interface UserMapstruct {
 
 
-    override fun toDto(userEntity: UserEntity): UserDTO
-
+    fun toDTO(userEntity: UserEntity,@Context context: CycleAvoidingMappingContext): UserDTO
     @InheritInverseConfiguration
-    override fun toEntity(userDto: UserDTO): UserEntity
-
+    fun toEntity(userDto: UserDTO, @Context context: CycleAvoidingMappingContext): UserEntity
 }
 

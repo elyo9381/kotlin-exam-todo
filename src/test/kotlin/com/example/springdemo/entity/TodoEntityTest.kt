@@ -1,6 +1,7 @@
 package com.example.springdemo.entity
 
 import com.example.springdemo.dto.TodoDTO
+import com.example.springdemo.mapstruct.CycleAvoidingMappingContext
 import com.example.springdemo.mapstruct.TodoMapstruct
 import com.example.springdemo.repository.TodoRepository
 import org.junit.jupiter.api.Assertions.*
@@ -29,7 +30,7 @@ internal class TodoEntityTest @Autowired constructor(@Autowired private var todo
             this.schedule = LocalDateTime.now()
         }
 
-        val dataTodo = todoMapstruct.toEntity(dataDto1)
+        val dataTodo = todoMapstruct.toEntity(dataDto1, CycleAvoidingMappingContext())
         val save = todoRepository.save(dataTodo)
 
         val findById = todoRepository.findById(save.todono!!)
@@ -46,7 +47,7 @@ internal class TodoEntityTest @Autowired constructor(@Autowired private var todo
             this.schedule = LocalDateTime.now()
         }
 
-        val testTodo = todoMapstruct.toEntity(testDto)
+        val testTodo = todoMapstruct.toEntity(testDto,CycleAvoidingMappingContext())
 
         val saveTodo= todoRepository.save(testTodo)
 

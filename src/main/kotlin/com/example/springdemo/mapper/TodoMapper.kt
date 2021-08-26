@@ -21,4 +21,8 @@ interface TodoMapper {
     //count
     @Throws(Exception::class)
     fun testTableCount(search: PageDTO): Long
+
+
+    @Throws(Exception::class)
+    fun todoAll(): MutableList<TodoDTO>
 }

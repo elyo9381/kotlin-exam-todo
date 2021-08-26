@@ -2,6 +2,7 @@ package com.example.springdemo.controller.api
 
 import com.example.springdemo.dto.*
 import com.example.springdemo.mapper.TodoMapper
+import com.example.springdemo.mapstruct.CycleAvoidingMappingContext
 import com.example.springdemo.mapstruct.TodoMapstruct
 import com.example.springdemo.repository.TodoRepository
 import com.example.springdemo.service.TodoService
@@ -34,9 +35,9 @@ class TodoController(
     fun create(@Valid @RequestBody todoDto: TodoDTO): ResponseEntity<Any?> {
 //        val createTodoDto = todoService.createTodo(todoDto)
 
-        val toEntity = todoMapstruct.toEntity(todoDto)
+        val toEntity = todoMapstruct.toEntity(todoDto, CycleAvoidingMappingContext())
         val save = todoRepository.save(toEntity)
-        val toDTO = todoMapstruct.toDto(save)
+        val toDTO = todoMapstruct.toDTO(save,CycleAvoidingMappingContext())
 
         return ResponseEntity.status(HttpStatus.CREATED).body(toDTO)
     }
@@ -64,9 +65,9 @@ class TodoController(
         }
 //      val update = todoService.update(todoDto)
 
-        val toEntity = todoMapstruct.toEntity(todoDto)
+        val toEntity = todoMapstruct.toEntity(todoDto,CycleAvoidingMappingContext())
         val save = todoRepository.save(toEntity)
-        val toDto = todoMapstruct.toDto(save)
+        val toDto = todoMapstruct.toDTO(save,CycleAvoidingMappingContext())
 
         return ResponseEntity.ok(toDto)
     }
@@ -91,6 +92,16 @@ class TodoController(
         val count = todoMapper.testTableCount(pageDto)
 
         return ResponseEntity.ok(PageImpl(list, pageRequest, count))
+    }
+
+
+    @PostMapping("/mybatis/list")
+    @ResponseBody
+    fun listAll(): ResponseEntity<Any> {
+
+        val list = todoMapper.todoAll()
+
+        return ResponseEntity.ok(list)
     }
 
 }
