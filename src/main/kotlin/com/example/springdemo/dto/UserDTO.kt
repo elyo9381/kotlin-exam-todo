@@ -10,7 +10,12 @@ data class UserDTO(var userno: Long? = null) {
     var updatedAt: LocalDateTime? = null
     var info : JsonArray? = null
     var todos: MutableList<TodoDTO> = ArrayList()
+
     var todolist : JsonArray? = null
+//    override fun toString(): String {
+//        return "UserDTO(userno=$userno, name=$name, createdAt=$createdAt, updatedAt=$updatedAt, info=$info, todos=$todos, todolist=$todolist)"
+//    }
+
 }
 
 

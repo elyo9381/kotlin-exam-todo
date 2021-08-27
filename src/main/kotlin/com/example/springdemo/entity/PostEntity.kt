@@ -9,7 +9,6 @@ import javax.persistence.*
 @Table(name = "tb_post")
 data class PostEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var postno: Long? = null)
 {
-
     var name: String? = null
     var title: String? = null
 
@@ -23,6 +22,7 @@ data class PostEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) va
     override fun toString(): String {
         return "PostEntity(postno=$postno, name=$name, title=$title, car=$car, createdDate=$createdDate)"
     }
+
 
 
 }

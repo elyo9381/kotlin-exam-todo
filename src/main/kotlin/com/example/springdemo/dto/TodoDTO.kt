@@ -11,6 +11,7 @@ data class TodoDTO(var todono: Long? = null) {
     var createdAt: LocalDateTime? = null
     var updatedAt: LocalDateTime? = null
     var user : UserDTO? = null
+
     override fun toString(): String {
         return "TodoDto(todono=$todono, title=$title, description=$description, schedule=$schedule, createdAt=$createdAt, updatedAt=$updatedAt, user=$user)"
     }

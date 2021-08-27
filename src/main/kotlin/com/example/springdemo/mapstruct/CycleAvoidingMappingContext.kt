@@ -10,7 +10,7 @@ class CycleAvoidingMappingContext {
     private val knownInstances: MutableMap<Any, Any> = IdentityHashMap()
 
     @BeforeMapping
-    fun <T> getMappedInstance(source: Any, @TargetType targetType: Class<T>?): T? {
+    fun <T> getMappedInstance(source: Any?, @TargetType targetType: Class<T>?): T? {
         return knownInstances[source] as T?
     }
 

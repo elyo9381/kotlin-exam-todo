@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query
 
 interface UserRepository : JpaRepository<UserEntity, Long> {
 
+
     @EntityGraph(attributePaths = ["todos"])
+//    @Query(value = "select DISTINCT t from UserEntity t left join fetch t.todos")
     override fun findAll(): MutableList<UserEntity>
 }

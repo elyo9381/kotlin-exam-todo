@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 
 
 @Service
+@Transactional(readOnly = true)
 class TodoService(
     private var todoRepository: TodoRepository,
     private var todoMapstruct: TodoMapstruct,
@@ -28,6 +29,7 @@ class TodoService(
 
         return todoMapstruct.toDTO(save,CycleAvoidingMappingContext())
     }
+
 
     fun readTodo(id: Long): TodoDTO? {
         val findById = todoRepository.findById(id).get()
@@ -54,7 +56,7 @@ class TodoService(
         return todoMapstruct.toDTO(save,CycleAvoidingMappingContext())
     }
 
-    fun delete(id: Long): Unit? {
+    fun delete(id: Long) {
         return todoRepository.deleteById(id)
     }
 

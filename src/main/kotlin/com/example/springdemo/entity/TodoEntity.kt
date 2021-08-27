@@ -16,8 +16,15 @@ data class TodoEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) va
     @ManyToOne()
     @JoinColumn(name = "userno")
     var user : UserEntity? = null
-
-
+        set(userEntity){
+            if(this.user != null){
+                this.user!!.todos.remove(this)
+            }
+            field = userEntity
+            if(user != null && !user!!.todos.contains(this)){
+                this.user!!.todos.add(this)
+            }
+        }
 
 }
 

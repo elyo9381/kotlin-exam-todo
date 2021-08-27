@@ -19,11 +19,14 @@ data class UserEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) va
     @Convert(converter = JsonArrayConverter::class)
     var info : JsonArray? = null
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     var todos: MutableList<TodoEntity> = ArrayList()
 
     fun addTodo(todo: TodoEntity) {
-        todos.add(todo)
+        if(!this.todos.contains(todo)){
+            this.todos.add(todo);
+        }
+        todo.user = this
     }
 
 
@@ -35,7 +38,6 @@ data class UserEntity(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) va
     override fun toString(): String {
         return "UserEntity(userno=$userno, name=$name, createdAt=$createdAt, updatedAt=$updatedAt, info=$info, todos=$todos)"
     }
-
 
 }
 

@@ -21,7 +21,7 @@
 <!--        ]]>-->
 <!--    </select>-->
 
-
+<!--     n+1 해결의 위한 한방 쿼리 -->
 <!--    <resultMap id="userlistsAll" type="com.example.springdemo.dto.UserDTO">-->
 <!--        <id property="userno" column="uno" />-->
 <!--        <result property="name" column="uname"/>-->
@@ -71,8 +71,7 @@
 
     <select id="Users" parameterType="com.example.springdemo.dto.PageDTO" resultType="com.example.springdemo.dto.UserDTO">
         <![CDATA[
-        select * from tb_user tu left outer join tb_todo tt on tu.userno = tt.userno
-        where true
+        select * from tb_user tu where true
         ]]>
         <if test='title != null and title !=""'>
             and title like concat('%', #{title}, '%')
